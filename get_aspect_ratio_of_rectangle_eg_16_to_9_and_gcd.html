@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Aspect ratio of an image</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<script>
+'use strict';
+
+    //var myWidth = 1024; // 4 : 3        ggT = 256
+    //var myHeight = 768;
+
+    var myWidth = 1920; // 16 : 9    ggT = 120
+    var myHeight = 1080;
+
+    // var myWidth = 1200; // 4 : 3     ggT = 300
+    // var myHeight = 900;
+
+
+    /**
+     * Calculating the aspect ratio of an image, video or monitor with the Greatest Common Divisor (gcd). e.g. 16:9 
+     * Das Seitenverhältnis/Ratio eines Bildes, Videos oder Monitors berechnen anhand des größten gemeinsamen Teilers (ggT). z.B: 16:9
+     * 
+     * Determine the greates common divisor:
+     * Divide the two dimension values by all numbers (only) from the smaller dimension value (e.g. 768) downwards 
+     * till the first number (appearence), where both values are divisible without remainder (modulus where result is = 0).
+     * This number (appearence) is the gcd.
+     * (e.g. for 1024x768 => 768%767 and 1024%767, 768%766 and 1024%766 ... till the result for both = 0)
+     * Then divide both dimensions by the gcd and we receive the width-height-ratio e.g. 16:9
+     * 
+     * Den größten Gemeinsamen Teiler ermitteln:
+     * Die beiden Abmessungswerte durch alle Zahlen (nur) vom kleineren Abmessungswert (z.B. 768) abwärts 
+     * bis zum ersten Vorkommen, bei welchem beide Zahlen einen Null-Restbetrag ergeben. 
+     * Dieser Wert (bzw. erstes Vorkommen) ist der ggT.
+     * (also z.B. bei 1024x768 => 768%767 und 1024%767, 768%766 und 1024%766 ... solange bis Ergebnis bei beiden = 0)
+     * Dann Beide Abmessungswerte durch den ggT teilen, ergibt das Seitenverhältnis z.B. 16:9
+     * 
+     */
+    function getGreatestCommonDivisor(myWidth, myHeight){ // größter gemeinsamer Teiler | ggT
+
+        var i;
+        var theSmallerSize = Math.min(myWidth, myHeight); // Get the smaller of both numbers because the ratio should not be smaller then 1
+        var theLargerSize = Math.max(myWidth, myHeight);
+        var myGCD = null;
+
+        // Decrementing is better, because with increment-version (i=0; i<theSmallerSize; i++) 
+        // we would have a longer loop because we have to loop through the complete size of the theSmallerSize
+        // (from 1 to theSmallerSize)
+        // here we only need to loop till the first occurence 
+        // (from theSmallerSize till first occurence, and not till 1)
+        for (i=theSmallerSize; i>0; i--){
+
+            // Division without remainder (only if both values are without remainder)
+            // Division ohne Restbetrag (nur wenn beide Abmessungeswerte ohne Restbetrag)
+            if (theSmallerSize%i==0 && theLargerSize%i==0){
+                myGCD = i;
+                break; // Skip the loop if we found our occurence
+            }
+        }
+
+        var outputRatioLarge = theLargerSize / myGCD;
+        var outputRatioSmall = theSmallerSize / myGCD;
+
+        console.log('myGCD: ' + myGCD + ' width-height-ratio: ' + outputRatioLarge + ' : ' + outputRatioSmall);
+    }
+
+    getGreatestCommonDivisor(myWidth, myHeight);
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
